@@ -26,14 +26,24 @@ const createPublicRoom = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-const getPublicRoom = async (req: Request, res: Response): Promise<any> => {
+const getPublicRooms = async (req: Request, res: Response): Promise<any> => {
   try {
-    const publicRoom = await PublicRoom.find();
-    res.json(publicRoom);
+    const publicRooms = await PublicRoom.find();
+    res.json(publicRooms);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error in getting public rooms" });
   }
 };
 
-export default { createPublicRoom, getPublicRoom };
+const getPublicRoom = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const PublicRooms = await PublicRoom.findOne({ _id: req.params.id});
+    res.json(PublicRooms);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error in getting public room" });
+  }
+};
+
+export default { createPublicRoom, getPublicRoom, getPublicRooms };
