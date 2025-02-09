@@ -18,6 +18,19 @@ const getMyRooms = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+const getRooms = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const rooms = await Rooms.find({}).populate("user");
+    if (!rooms) {
+      return res.status(404).json({ message: "Rooms not found" });
+    }
+    res.json(rooms);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "error in fetching rooms" });
+  }
+};
+
 const createRooms = async (req: Request, res: Response): Promise<any> => {
   try {
     const files = req.files as Express.Multer.File[]; // Ensure `req.files` is an array
@@ -76,4 +89,5 @@ export default {
   createRooms,
   getMyRooms,
   deleteRoom,
+  getRooms,
 };

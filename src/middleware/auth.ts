@@ -9,6 +9,7 @@ declare global {
       userId: string;
       auth0Id: string;
       targetId: string;
+      selectedChatId: string;
     }
   }
 }

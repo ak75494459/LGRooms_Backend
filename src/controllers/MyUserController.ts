@@ -56,8 +56,33 @@ const updateCurrentUser = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+const updateIsChatSelected = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const { isChatSelected } = req.body;
+
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not Found" });
+    }
+
+    user.isChatSelected = isChatSelected;
+    await user.save(); // Ensure update is completed
+
+    console.log("Updated isChatSelected:", user.isChatSelected);
+
+    res.json({ isChatSelected: user.isChatSelected });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error updating isChatSelected" });
+  }
+};
+
 export default {
   createCurrentUser,
   updateCurrentUser,
   getCurrentUser,
+  updateIsChatSelected,
 };

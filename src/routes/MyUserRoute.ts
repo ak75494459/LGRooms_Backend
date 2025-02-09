@@ -14,5 +14,11 @@ router.put(
   validateMyUserRequest,
   MyUserController.updateCurrentUser
 );
+router.put(
+  "/chatUpdate",
+  jwtCheck,
+  jwtParse,
+  MyUserController.updateIsChatSelected
+);
 
 export default router;

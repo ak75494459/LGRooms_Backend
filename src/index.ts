@@ -9,6 +9,8 @@ import PublicRoomRoute from "./routes/PublicRoomRoute";
 import ChatRoute from "./routes/ChatRoute";
 import MessageRoute from "./routes/MessageRoute";
 import { Server } from "socket.io";
+import multer from "multer";
+import NotificationRoute from "./routes/NotificationRoute";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -20,16 +22,18 @@ mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
   .then(() => console.log("Connected to database"))
   .catch((error) => console.error("Database connection failed:", error));
-
+const upload = multer();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.use(upload.none());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/my/user", MyUserRoute);
 app.use("/api/my/rooms", MyRoomRoute);
 app.use("/api/public/rooms", PublicRoomRoute);
 app.use("/api/my/chat", ChatRoute);
 app.use("/api/message", MessageRoute);
+app.use("/api/my/notification", NotificationRoute);
 
 const server = app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");

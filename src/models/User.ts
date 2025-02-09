@@ -19,6 +19,9 @@ const userSchema = new mongoose.Schema(
     addressLine1: {
       type: String,
     },
+    isChatSelected: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

@@ -24,7 +24,7 @@ router.post(
 );
 
 router.delete("/:id", jwtCheck, jwtParse, MyRoomController.deleteRoom);
-
 router.get("/", jwtCheck, jwtParse, MyRoomController.getMyRooms);
+router.get("/all", jwtCheck, jwtParse, MyRoomController.getRooms);
 
 export default router;
