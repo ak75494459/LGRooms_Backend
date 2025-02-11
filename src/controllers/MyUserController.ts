@@ -56,10 +56,7 @@ const updateCurrentUser = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-const updateIsChatSelected = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
+const updateIsChatSelected = async (req: Request, res: Response):Promise<any> => {
   try {
     const { isChatSelected } = req.body;
 
@@ -71,7 +68,7 @@ const updateIsChatSelected = async (
     user.isChatSelected = isChatSelected;
     await user.save(); // Ensure update is completed
 
-    console.log("Updated isChatSelected:", user.isChatSelected);
+    console.log("Updated isChatSelected:", user.isChatSelected); 
 
     res.json({ isChatSelected: user.isChatSelected });
   } catch (error) {
