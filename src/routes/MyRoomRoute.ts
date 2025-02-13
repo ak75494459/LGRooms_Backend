@@ -8,30 +8,41 @@ const router = express.Router();
 
 const storage = multer.memoryStorage();
 
-const fileFilter = (
-  req: Express.Request,
-  file: Express.Multer.File,
-  cb: FileFilterCallback
-) => {
-  if (file.mimetype.startsWith("image/")) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only images are allowed") as unknown as null, false);
-  }
-};
-
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-  fileFilter: fileFilter, // Add file filter
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, //5mb
+  },
 });
+const uploadMiddleware = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  upload.array("imageFile", 10)(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res
+          .status(400)
+          .json({ error: "File size too large! Max 10MB allowed." });
+      }
+      if (err.code === "LIMIT_UNEXPECTED_FILE") {
+        return res.status(400).json({ error: "Unexpected file field name." });
+      }
+      return res.status(400).json({ error: err.message });
+    } else if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    next();
+  });
+};
 
 router.post(
   "/",
   validateMyRoomRequest,
   jwtCheck,
   jwtParse,
-  upload.array("imageFile", 10),
+  uploadMiddleware,
   MyRoomController.createRooms
 );
 
