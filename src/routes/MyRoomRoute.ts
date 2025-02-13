@@ -7,23 +7,23 @@ import { jwtCheck, jwtParse } from "../middleware/auth";
 const router = express.Router();
 
 const storage = multer.memoryStorage();
+
 const fileFilter = (
   req: Express.Request,
   file: Express.Multer.File,
-  cb: multer.FileFilterCallback
+  cb: FileFilterCallback
 ) => {
   if (file.mimetype.startsWith("image/")) {
-    cb(null, true); // ✅ Accept the image
+    cb(null, true);
   } else {
-    cb(new Error("Only images are allowed") as unknown as null, false); // ✅ Explicitly cast Error to null
+    cb(new Error("Only images are allowed") as unknown as null, false);
   }
 };
+
 const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024, //5mb
-  },
-  fileFilter,
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: fileFilter, // Add file filter
 });
 
 router.post(
