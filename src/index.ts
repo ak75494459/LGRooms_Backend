@@ -9,7 +9,7 @@ import PublicRoomRoute from "./routes/PublicRoomRoute";
 import ChatRoute from "./routes/ChatRoute";
 import MessageRoute from "./routes/MessageRoute";
 import { Server } from "socket.io";
-import multer from "multer";
+// import multer from "multer";
 import NotificationRoute from "./routes/NotificationRoute";
 
 cloudinary.config({
@@ -22,11 +22,11 @@ mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
   .then(() => console.log("Connected to database"))
   .catch((error) => console.error("Database connection failed:", error));
-const upload = multer();
+// const upload = multer();
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(upload.none());
+// app.use(upload.none());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/my/user", MyUserRoute);
 app.use("/api/my/rooms", MyRoomRoute);
