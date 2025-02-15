@@ -13,6 +13,10 @@ const publicRoomSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  location: {
+    type: String,
+    required: true,
+  },
 });
 
 const PublicRoom = mongoose.model("PublicRoom", publicRoomSchema);

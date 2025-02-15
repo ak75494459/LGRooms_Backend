@@ -6,7 +6,7 @@ const createPublicRoom = async (req: Request, res: Response): Promise<any> => {
   try {
     console.log("Received Body:", req.body);
 
-    if (!req.body.rent || !req.body.description) {
+    if (!req.body.rent || !req.body.description || !req.body.location) {
       return res
         .status(400)
         .json({ message: "Rent and Description are required" });
@@ -18,8 +18,8 @@ const createPublicRoom = async (req: Request, res: Response): Promise<any> => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const owner = mainController.email;
-    if (owner !== process.env.PUBLIC_ROOM_EMAIL) {
+    const owner = mainController._id;
+    if (owner.toString() !== process.env.PUBLIC_ROOM_ID) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
@@ -28,6 +28,7 @@ const createPublicRoom = async (req: Request, res: Response): Promise<any> => {
       rent: Number(req.body.rent), // Ensure rent is a number
       description: req.body.description,
       imageUrl: Array.isArray(req.body.imageUrl) ? req.body.imageUrl : [], // Ensure it's an array
+      location: req.body.location,
     });
 
     await publicRoom.save();
