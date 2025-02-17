@@ -11,6 +11,7 @@ import MessageRoute from "./routes/MessageRoute";
 import { Server } from "socket.io";
 // import multer from "multer";
 import NotificationRoute from "./routes/NotificationRoute";
+import SearchPublicRoomRoute from "./routes/SearchPublicRoomRoute";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/my/user", MyUserRoute);
 app.use("/api/my/rooms", MyRoomRoute);
 app.use("/api/public/rooms", PublicRoomRoute);
+app.use("/api/public/rooms", SearchPublicRoomRoute);
 app.use("/api/my/chat", ChatRoute);
 app.use("/api/message", MessageRoute);
 app.use("/api/my/notification", NotificationRoute);

@@ -41,8 +41,22 @@ const createPublicRoom = async (req: Request, res: Response): Promise<any> => {
 
 const getPublicRooms = async (req: Request, res: Response): Promise<any> => {
   try {
-    const publicRooms = await PublicRoom.find();
-    res.json(publicRooms);
+    const page = parseInt(req.query.page as string) || 1;
+    const pageSize = 10;
+    let query: any = {};
+    const publicRooms = await PublicRoom.find(query)
+      .sort({ rent: 1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+    const total = await PublicRoom.countDocuments(query);
+    res.json({
+      data: publicRooms,
+      pagination: {
+        total,
+        page,
+        pages: Math.ceil(total / pageSize),
+      },
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error in getting public rooms" });
