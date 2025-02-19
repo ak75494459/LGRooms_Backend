@@ -42,7 +42,7 @@ const createPublicRoom = async (req: Request, res: Response): Promise<any> => {
 const getPublicRooms = async (req: Request, res: Response): Promise<any> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const pageSize = 10;
+    const pageSize = 12;
     let query: any = {};
     const publicRooms = await PublicRoom.find(query)
       .sort({ rent: 1 })
